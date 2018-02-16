@@ -227,6 +227,7 @@ config router static
     set gateway 192.168.122.1
     set device "port1"
   next
+end
 config firewall policy
     edit 1
         set name "Policy1"
@@ -284,11 +285,12 @@ virt-install --connect qemu:///system --noautoconsole --filesystem ${PWD},shared
 retries=30
 while [ $retries -gt 0 ]
 do
-    result=$(ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null user@192.168.70.41  sudo ip route add 192.168.80.0/24 dev ens4 via 192.168.70.41)
-    if [ $result -eq 0 ] ; then
+    result=$(ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null user@192.168.70.41  'sudo ip route | grep 192.168.80')
+    if [ $? -eq 0 ] ; then
         break
     fi
     echo "Installing route in client..."
+    ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null user@192.168.70.41  sudo ip route add 192.168.80.0/24 dev ens4 via 192.168.70.40
     sleep 5
     retries=$((retries-1))
 done
@@ -296,14 +298,16 @@ done
 retries=30
 while [ $retries -gt 0 ]
 do
-    result=$(ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null user@192.168.80.41  'sudo apt -f install python; sudo python -m SimpleHTTPServer 80' &)
-    if [ $result -eq 0 ] ; then
+    result=$(ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null user@192.168.80.41  'sudo apt -f install python')
+    if [ $? -eq 0 ] ; then
         break
     fi
     echo "Installing route in client..."
     sleep 5
     retries=$((retries-1))
 done
+
+ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null user@192.168.80.41  sudo python -m SimpleHTTPServer 80 &
 
 echo "*******************************************************************"
 echo "* FINISHED!!!                                                     *"
