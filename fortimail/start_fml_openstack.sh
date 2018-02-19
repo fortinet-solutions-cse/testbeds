@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-#!/bin/bash
 #************************************************
 #
 # Use this example to start a FortiMail VM in Openstack
