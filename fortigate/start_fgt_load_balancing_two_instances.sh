@@ -223,9 +223,9 @@ EOF
 sudo virsh net-create virbr_client
 sudo virsh net-create virbr_server
 sudo virsh net-create virbr_lb
-sudo virsh net-update default delete ip-dhcp-host "<host mac='${FGT_MAC_ADMIN}' name='mgmt' ip='${FGT_IP_ADMIN}'/>" --live
-sudo virsh net-update default delete ip-dhcp-host "<host mac='${FGT_1_MAC_ADMIN}' name='mgmt1' ip='${FGT_1_IP_ADMIN}'/>" --live
-sudo virsh net-update default delete ip-dhcp-host "<host mac='${FGT_2_MAC_ADMIN}' name='mgmt2' ip='${FGT_2_IP_ADMIN}'/>" --live
+sudo virsh net-update default delete ip-dhcp-host "<host mac='${FGT_MAC_ADMIN}'/>" --live
+sudo virsh net-update default delete ip-dhcp-host "<host mac='${FGT_1_MAC_ADMIN}'/>" --live
+sudo virsh net-update default delete ip-dhcp-host "<host mac='${FGT_2_MAC_ADMIN}'/>" --live
 sudo virsh net-update default add ip-dhcp-host "<host mac='${FGT_MAC_ADMIN}' name='mgmt' ip='${FGT_IP_ADMIN}'/>" --live
 sudo virsh net-update default add ip-dhcp-host "<host mac='${FGT_1_MAC_ADMIN}' name='mgmt1' ip='${FGT_1_IP_ADMIN}'/>" --live
 sudo virsh net-update default add ip-dhcp-host "<host mac='${FGT_2_MAC_ADMIN}' name='mgmt2' ip='${FGT_2_IP_ADMIN}'/>" --live
@@ -386,7 +386,7 @@ done
 retries=30
 while [ $retries -gt 0 ]
 do
-    result=$(ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null user@192.168.90.40  'sudo apt -f install python')
+    result=$(ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null user@192.168.90.40  'sudo apt -y install python')
     if [ $? -eq 0 ] ; then
         break
     fi
@@ -404,3 +404,70 @@ echo "*******************************************************************"
 
 
 
+config firewall vip
+    edit Load-Bal_VS1
+        set type server-load-balance
+        set server-type http
+        set ldb-method first-alive
+        set extip 192.168.70.100
+        set extintf port2
+        set extport 80
+        config realservers
+            edit 1
+                set ip 192.168.80.42
+                set port 80
+                next
+            edit 2
+                set ip 192.168.80.43
+                set port 80
+                next
+            end
+        end
+    end
+end
+
+
+config firewall vip
+    edit "Load-Bal_VS1"
+        set uuid c247b7e6-1652-51e8-66d6-fc904d551686
+        set type server-load-balance
+        set extip 192.168.70.100
+        set extintf "port2"
+        set server-type http
+        set ldb-method first-alive
+        set extport 81
+        config realservers
+            edit 1
+                set ip 192.168.80.42
+                set port 80
+            next
+            edit 2
+                set ip 192.168.80.43
+                set port 80
+            next
+        end
+    next
+end
+
+config firewall policy
+    edit 1
+        set name "LB policy"
+        set uuid bd122812-1655-51e8-4c8c-421f4e439581
+        set srcintf "port2"
+        set dstintf "port3"
+        set srcaddr "all"
+        set dstaddr "Load-Bal_VS1"
+        set action accept
+        set schedule "always"
+        set service "ALL"
+        set nat enable
+    next
+end
+
+
+
+diagnose debug cli 8
+
+get router info routing-table all
+diagnose sniffer packet any "host 192.168.70.100" 4
+8:0:27:4c:70:41

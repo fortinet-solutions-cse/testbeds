@@ -162,7 +162,7 @@ EOF
 
 sudo virsh net-create virbr_client
 sudo virsh net-create virbr_server
-sudo virsh net-update default delete ip-dhcp-host "<host mac='${FGT_MAC_ADMIN}' name='mgmt' ip='${FGT_IP_ADMIN}'/>" --live
+sudo virsh net-update default delete ip-dhcp-host "<host mac='${FGT_MAC_ADMIN}'/>" --live
 sudo virsh net-update default add ip-dhcp-host "<host mac='${FGT_MAC_ADMIN}' name='mgmt' ip='${FGT_IP_ADMIN}'/>" --live
 #************************************************
 # Create metadata for client/server
@@ -326,7 +326,7 @@ done
 retries=30
 while [ $retries -gt 0 ]
 do
-    result=$(ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null user@192.168.80.41  'sudo apt -f install python')
+    result=$(ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null user@192.168.80.41  'sudo apt -y install python')
     if [ $? -eq 0 ] ; then
         break
     fi
