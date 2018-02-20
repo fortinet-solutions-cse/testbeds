@@ -402,7 +402,7 @@ echo "* FINISHED!!!                                                     *"
 echo "* Use root/m, user/m or sfc/m as possible user/password logins    *"
 echo "*******************************************************************"
 
-
+exit 0
 
 config firewall vip
     edit Load-Bal_VS1
@@ -467,7 +467,6 @@ end
 
 
 diagnose debug cli 8
-
 get router info routing-table all
 diagnose sniffer packet any "host 192.168.70.100" 4
 8:0:27:4c:70:41
