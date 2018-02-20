@@ -79,11 +79,11 @@ export FGT_1_MAC_RIGHT=08:00:27:4c:90:42
 
 export FGT_2_NAME=fortigate_2
 export FGT_2_IP_ADMIN=192.168.122.43
-export FGT_2_IP_CLIENT=192.168.80.43
-export FGT_2_IP_SERVER=192.168.90.43
+export FGT_2_IP_LEFT=192.168.80.43
+export FGT_2_IP_RIGHT=192.168.90.43
 export FGT_2_MAC_ADMIN=08:00:27:4c:22:43
-export FGT_2_MAC_CLIENT=08:00:27:4c:80:43
-export FGT_2_MAC_SERVER=08:00:27:4c:90:43
+export FGT_2_MAC_LEFT=08:00:27:4c:80:43
+export FGT_2_MAC_RIGHT=08:00:27:4c:90:43
 
 
 export CLIENT_IP=192.168.70.40
@@ -124,6 +124,12 @@ sudo virsh net-undefine virbr_lb
 
 sudo virsh destroy  ${FGT_NAME}
 sudo virsh undefine ${FGT_NAME}
+
+sudo virsh destroy  ${FGT_1_NAME}
+sudo virsh undefine ${FGT_1_NAME}
+
+sudo virsh destroy  ${FGT_2_NAME}
+sudo virsh undefine ${FGT_2_NAME}
 
 sudo virsh destroy  client
 sudo virsh undefine client
@@ -179,7 +185,7 @@ cat >virbr_lb <<EOF
       <port start='1024' end='65535'/>
     </nat>
   </forward>
-  <bridge name='virbr_server' stp='on' delay='0'/>
+  <bridge name='virbr_lb' stp='on' delay='0'/>
   <mac address='52:54:00:79:7c:c4'/>
   <ip address='192.168.80.1' netmask='255.255.255.0'>
     <dhcp>
@@ -217,12 +223,12 @@ EOF
 sudo virsh net-create virbr_client
 sudo virsh net-create virbr_server
 sudo virsh net-create virbr_lb
-sudo virsh net-update default add ip-dhcp-host "<host mac='${FGT_MAC_ADMIN}' name='mgmt' ip='${FGT_IP_ADMIN}'/> \
-  <host mac='${FGT_1_MAC_ADMIN}' name='mgmt' ip='${FGT_1_IP_ADMIN}'/>
-  <host mac='${FGT_2_MAC_ADMIN}' name='mgmt' ip='${FGT_2_IP_ADMIN}'/>" --live
-sudo virsh net-update default add ip-dhcp-host "<host mac='${FGT_MAC_ADMIN}' name='mgmt' ip='${FGT_IP_ADMIN}'/> \
-  <host mac='${FGT_1_MAC_ADMIN}' name='mgmt' ip='${FGT_1_IP_ADMIN}'/>
-  <host mac='${FGT_2_MAC_ADMIN}' name='mgmt' ip='${FGT_2_IP_ADMIN}'/>" --live
+sudo virsh net-update default delete ip-dhcp-host "<host mac='${FGT_MAC_ADMIN}' name='mgmt' ip='${FGT_IP_ADMIN}'/>" --live
+sudo virsh net-update default delete ip-dhcp-host "<host mac='${FGT_1_MAC_ADMIN}' name='mgmt1' ip='${FGT_1_IP_ADMIN}'/>" --live
+sudo virsh net-update default delete ip-dhcp-host "<host mac='${FGT_2_MAC_ADMIN}' name='mgmt2' ip='${FGT_2_IP_ADMIN}'/>" --live
+sudo virsh net-update default add ip-dhcp-host "<host mac='${FGT_MAC_ADMIN}' name='mgmt' ip='${FGT_IP_ADMIN}'/>" --live
+sudo virsh net-update default add ip-dhcp-host "<host mac='${FGT_1_MAC_ADMIN}' name='mgmt1' ip='${FGT_1_IP_ADMIN}'/>" --live
+sudo virsh net-update default add ip-dhcp-host "<host mac='${FGT_2_MAC_ADMIN}' name='mgmt2' ip='${FGT_2_IP_ADMIN}'/>" --live
 
 
 #************************************************
@@ -367,12 +373,12 @@ virt-install --connect qemu:///system --noautoconsole --filesystem ${PWD},shared
 retries=30
 while [ $retries -gt 0 ]
 do
-    result=$(ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null user@192.168.70.41  'sudo ip route | grep 192.168.90')
+    result=$(ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null user@192.168.70.40  'sudo ip route | grep 192.168.90')
     if [ $? -eq 0 ] ; then
         break
     fi
     echo "Installing route in client..."
-    ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null user@192.168.70.41  sudo ip route add 192.168.90.0/24 dev ens4 via 192.168.70.41
+    ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null user@192.168.70.40  sudo ip route add 192.168.90.0/24 dev ens4 via 192.168.70.41
     sleep 5
     retries=$((retries-1))
 done
@@ -395,3 +401,6 @@ echo "*******************************************************************"
 echo "* FINISHED!!!                                                     *"
 echo "* Use root/m, user/m or sfc/m as possible user/password logins    *"
 echo "*******************************************************************"
+
+
+
