@@ -58,6 +58,7 @@ EOF
 cat >cfg-drv-fgt/openstack/latest/user_data <<EOF
 config system interface
   edit "port1"
+    set vdom "root"
     set mode static
     set ip 192.168.122.40/24
     set allowaccess https ping ssh snmp http telnet fgfm radius-acct probe-response capwap ftm
@@ -72,6 +73,9 @@ config router static
     set gateway 192.168.122.1
     set device "port1"
   next
+end
+config system global
+  set admintimeout 480
 end
 EOF
 
