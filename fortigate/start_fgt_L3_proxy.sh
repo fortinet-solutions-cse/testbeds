@@ -31,7 +31,6 @@
 #************************************************
 # Check Fortigate VM existence
 #************************************************
-set -x
 
 if [ -z "$1" ]; then
   echo "Need location of Fortigate image"
@@ -337,7 +336,13 @@ done
 
 ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null user@192.168.80.41  sudo python -m SimpleHTTPServer 80 &
 
-echo "*******************************************************************"
-echo "* FINISHED!!!                                                     *"
-echo "* Use root/m, user/m or sfc/m as possible user/password logins    *"
-echo "*******************************************************************"
+echo -e "*****************************************************************"
+echo -e "*\t\t\t\t\t\t\t\t*"
+echo -e "* FINISHED! \t\t\t\t\t\t\t*"
+echo -e "* Use root/m, user/m or sfc/m as possible user/password logins\t*"
+echo -e "*\t\t\t\t\t\t\t\t*"
+echo -e "*  FGT IP:\t\t${FGT_IP_ADMIN}\t\t\t\t*"
+echo -e "*  Ubuntu client IP:\t${CLIENT_IP}\t\t\t\t*"
+echo -e "*  Ubuntu Server IP:\t${SERVER_IP}\t\t\t\t*"
+echo -e "*\t\t\t\t\t\t\t\t*"
+echo -e "*****************************************************************"
