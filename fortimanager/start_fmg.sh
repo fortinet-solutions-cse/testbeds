@@ -57,7 +57,7 @@ EOF
 
 cat >cfg-drv-fmg/openstack/latest/user_data <<EOF
 config system interface
-  edit "port1"license
+  edit "port1"
     set vdom "root"
     set mode static
     set ip 192.168.122.40/24
