@@ -1,0 +1,38 @@
+config system interface
+    edit "port2"
+        set type physical
+        set snmp-index 1
+        set nsh enable
+    next
+    edit "port3"
+        set type physical
+        set snmp-index 2
+        set nsh enable
+    next
+end
+ 
+config system virtual-wire-pair
+    edit "vwp1"
+        set member "port2" "port3"
+    next
+end
+ 
+
+config firewall service-path
+    edit "srvp1"
+        set spi 27
+    next
+end
+
+config firewall policy
+    edit 1
+        set srcintf "port2"
+        set dstintf "port3"
+        set srcaddr "all"
+        set dstaddr "all"
+        set action accept
+        set schedule "always"
+        set service "ALL"
+        set nsh-service-path "srvp1"
+    next
+end
