@@ -32,17 +32,15 @@ if [[ "$(realpath $FORTIGATE_QCOW2)" == "$(pwd)/fortios-nsh.qcow2" ]]; then
    exit -1
 fi
 
-export SF2_NAME=fortigate-nsh
-export SF2_IP_ADMIN=192.168.122.42
-export SF2_IP=192.168.70.40
-export SF2_IP2=192.168.80.40
-export SF2_MAC_ADMIN=08:00:27:4c:22:42
-export SF2_MAC=08:00:27:4c:70:40
-export SF2_MAC2=08:00:27:4c:80:40
+export SF_NAME=fortigate-nsh
+export SF_IP_ADMIN=192.168.122.42
+export SF_MAC_ADMIN=08:00:27:4c:22:42
+export SF_MAC=08:00:27:4c:70:40
+export SF_MAC2=08:00:27:4c:80:40
 
 rm -f fortios-nsh.qcow2
 rm -rf cfg-drv-fgt
-rm -rf ${SF2_NAME}-cidata.iso
+rm -rf ${SF_NAME}-cidata.iso
 
 cp ${FORTIGATE_QCOW2} ./fortios-nsh.qcow2
 
@@ -60,7 +58,7 @@ config system interface
   edit "port1"
     set vdom "root"
     set mode static
-    set ip 192.168.122.42/24
+    set ip ${SF_IP_ADMIN}/24
     set allowaccess https ping ssh snmp http telnet fgfm radius-acct probe-response capwap ftm
   next
 end
@@ -98,5 +96,5 @@ EOF
 sudo virsh net-create virbr1
 sudo virsh net-create virbr2
 
-sudo mkisofs -publisher "OpenStack Nova 12.0.2" -J -R -V config-2 -o ${SF2_NAME}-cidata.iso cfg-drv-fgt
-virt-install --connect qemu:///system --noautoconsole --filesystem ${PWD},shared_dir --import --name ${SF2_NAME} --ram 1024 --vcpus 1 --disk fortios-nsh.qcow2,size=3 --disk fgt-logs-nsh.qcow2,size=3 --disk ${SF2_NAME}-cidata.iso,device=cdrom,bus=ide,format=raw,cache=none --network bridge=virbr0,mac=${SF2_MAC_ADMIN},model=virtio --network bridge=virbr1,mac=${SF2_MAC},model=virtio --network bridge=virbr2,mac=${SF2_MAC2},model=virtio
+sudo mkisofs -publisher "OpenStack Nova 12.0.2" -J -R -V config-2 -o ${SF_NAME}-cidata.iso cfg-drv-fgt
+virt-install --connect qemu:///system --noautoconsole --filesystem ${PWD},shared_dir --import --name ${SF_NAME} --ram 1024 --vcpus 1 --disk fortios-nsh.qcow2,size=3 --disk fgt-logs-nsh.qcow2,size=3 --disk ${SF_NAME}-cidata.iso,device=cdrom,bus=ide,format=raw,cache=none --network bridge=virbr0,mac=${SF_MAC_ADMIN},model=virtio --network bridge=virbr1,mac=${SF_MAC},model=virtio --network bridge=virbr2,mac=${SF_MAC2},model=virtio
