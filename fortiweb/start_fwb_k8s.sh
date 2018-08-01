@@ -105,7 +105,7 @@ config system interface
   next
   edit "port3"
     set mode static
-    set ip ${SF_IP_OUTGOING}/24
+    set ip ${SF_IP_OUTGOING}/16
   next
 end
 config system dns
