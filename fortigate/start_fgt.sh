@@ -20,7 +20,7 @@ if [ -z "$1" ]; then
   exit -1
 fi
 result=$(file $1)
-if [[ $result == *"QEMU QCOW Image (v2)"* ]]; then
+if [[ $result == *"QEMU QCOW Image (v"* ]]; then
    echo "Supplied Fortigate image is in: $1"
    FORTIGATE_QCOW2=$1
 else
