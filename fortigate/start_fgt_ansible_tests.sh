@@ -32,9 +32,9 @@ if [[ "$(realpath $FORTIGATE_QCOW2)" == "$(pwd)/fortios.qcow2" ]]; then
    exit -1
 fi
 
-export SF_NAME=fortigate
-export SF_IP_ADMIN=192.168.122.40
-export SF_MAC_ADMIN=08:00:27:4c:22:40
+export FGT_NAME=fortigate
+export FGT_IP_ADMIN=192.168.122.40
+export FGT_MAC_ADMIN=08:00:27:4c:22:40
 export FGT_IP_CLIENT=192.168.70.41
 export FGT_IP_SERVER=192.168.70.42
 export FGT_MAC_CLIENT=08:00:27:4c:70:41
@@ -42,7 +42,7 @@ export FGT_MAC_SERVER=08:00:27:4c:70:42
 
 rm -f fortios.qcow2
 rm -rf cfg-drv-fgt
-rm -rf ${SF_NAME}-cidata.iso
+rm -rf ${FGT_NAME}-cidata.iso
 
 cp ${FORTIGATE_QCOW2} ./fortios.qcow2
 
@@ -50,11 +50,11 @@ cp ${FORTIGATE_QCOW2} ./fortios.qcow2
 #  Create Networks
 #************************************************
 
-sudo virsh net-destroy virbr_client
-sudo virsh net-destroy virbr_server
+sudo virsh net-destroy virbr_client 2> /dev/null
+sudo virsh net-destroy virbr_server 2> /dev/null
 
-sudo virsh net-undefine virbr_client
-sudo virsh net-undefine virbr_server
+sudo virsh net-undefine virbr_client 2> /dev/null
+sudo virsh net-undefine virbr_server 2> /dev/null
 
 cat >virbr_client <<EOF
 <network>
@@ -119,7 +119,7 @@ config system interface
   edit "port1"
     set vdom "root"
     set mode static
-    set ip ${SF_IP_ADMIN}/24
+    set ip ${FGT_IP_ADMIN}/24
     set allowaccess https ping ssh snmp http telnet fgfm radius-acct probe-response capwap ftm
   next
 end
@@ -138,11 +138,11 @@ config system global
 end
 EOF
 
-sudo mkisofs -publisher "OpenStack Nova 12.0.2" -J -R -V config-2 -o ${SF_NAME}-cidata.iso cfg-drv-fgt
-virt-install --connect qemu:///system --noautoconsole --filesystem ${PWD},shared_dir --import --name ${SF_NAME} \
+sudo mkisofs -publisher "OpenStack Nova 12.0.2" -J -R -V config-2 -o ${FGT_NAME}-cidata.iso cfg-drv-fgt
+virt-install --connect qemu:///system --noautoconsole --filesystem ${PWD},shared_dir --import --name ${FGT_NAME} \
    --ram 1024 --vcpus 1 \
    --disk fortios.qcow2,size=3 --disk fgt-logs.qcow2,size=3 \
-   --disk ${SF_NAME}-cidata.iso,device=cdrom,bus=ide,format=raw,cache=none \
-   --network bridge=virbr0,mac=${SF_MAC_ADMIN},model=virtio \
+   --disk ${FGT_NAME}-cidata.iso,device=cdrom,bus=ide,format=raw,cache=none \
+   --network bridge=virbr0,mac=${FGT_MAC_ADMIN},model=virtio \
    --network bridge=virbr_client,mac=${FGT_MAC_CLIENT},model=virtio --network bridge=virbr_server,mac=${FGT_MAC_SERVER},model=virtio 
 
