@@ -21,7 +21,7 @@ fi
 result=$(file $1)
 result_aux=$(file $2)
 
-if [[ $result == *"QEMU QCOW Image (v3)"* ]] && [[ $result_aux == *"QEMU QCOW Image (v3)"* ]] ; then
+if [[ $result == *"QEMU QCOW2 Image (v3)"* ]] && [[ $result_aux == *"QEMU QCOW2 Image (v3)"* ]] ; then
    echo "Supplied FortiMail image is in: $1"
    FortiMail_QCOW2=$1
    AuxDisk_QCOW2=$2
