@@ -106,4 +106,4 @@ aux_name=$(basename $AuxDisk_QCOW2)
 
 sudo mkisofs -publisher "OpenStack Nova 12.0.2" -J -R -V config-2 -o ${SF2_NAME}-cidata.iso cfg-drv-fgt
 virt-install --connect qemu:///system --noautoconsole --filesystem ${PWD},shared_dir --import --name ${SF2_NAME} \
-  --ram 2048 --vcpus 1 --disk fortimail-kvm.qcow2,size=3 --disk aux_disk.qcow2,size=${aux_name%.*} --disk ${SF2_NAME}-cidata.iso,device=cdrom,bus=ide,format=raw,cache=none --network bridge=virbr0,mac=${SF2_MAC_ADMIN},model=virtio
+  --ram 2048 --vcpus 1 --disk fortimail-kvm.qcow2,size=3,bus=virtio --disk aux_disk.qcow2,size=${aux_name%.*},bus=virtio --disk ${SF2_NAME}-cidata.iso,device=cdrom,format=raw,cache=none,bus=scsi --network bridge=virbr0,mac=${SF2_MAC_ADMIN},model=virtio
