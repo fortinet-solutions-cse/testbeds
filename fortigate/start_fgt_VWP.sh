@@ -38,7 +38,7 @@ if [ -z "$1" ]; then
   exit -1
 fi
 result=$(file $1)
-if [[ $result == *"QEMU QCOW Image (v2)"* ]]; then
+if [[ $result == *"QEMU QCOW2 Image (v"* ]]; then
    echo "Supplied Fortigate image is in: $1"
    FORTIGATE_QCOW2=$1
 else
@@ -235,7 +235,7 @@ config system interface
   edit "port1"
     set vdom root
     set mode dhcp
-    set allowaccess https ping ssh snmp http telnet fgfm radius-acct probe-response capwap ftm
+    set allowaccess ping https ssh snmp http telnet fgfm radius-acct probe-response fabric ftm     
   next
   edit "port2"
     set vdom root
@@ -259,6 +259,15 @@ end
 config system virtual-wire-pair
   edit "vwp1"
      set member "port2" "port3"
+  next
+end
+config system global
+  set admintimeout 480
+  set hostname FGT-VM64-KVM
+end
+config system admin
+  edit admin
+    set password m
   next
 end
 config firewall policy

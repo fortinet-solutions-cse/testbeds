@@ -20,7 +20,7 @@ if [ -z "$1" ]; then
   exit -1
 fi
 result=$(file $1)
-if [[ $result == *"QEMU QCOW Image (v"* ]]; then
+if [[ $result == *"QEMU QCOW2 Image (v"* ]]; then
    echo "Supplied Fortigate image is in: $1"
    FORTIGATE_QCOW2=$1
 else
@@ -120,7 +120,7 @@ config system interface
     set vdom "root"
     set mode static
     set ip ${FGT_IP_ADMIN}/24
-    set allowaccess https ping ssh snmp http telnet fgfm radius-acct probe-response capwap ftm
+    set allowaccess ping https ssh snmp http telnet fgfm radius-acct probe-response fabric ftm     
   next
 end
 config system dns
@@ -135,6 +135,12 @@ config router static
 end
 config system global
   set admintimeout 480
+  set hostname FGT-VM64-KVM
+end
+config system admin
+  edit admin
+    set password m
+  next
 end
 EOF
 
