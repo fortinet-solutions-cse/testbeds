@@ -20,7 +20,7 @@ if [ -z "$1" ]; then
   exit -1
 fi
 result=$(file $1)
-if [[ $result == *"QEMU QCOW Image (v2)"* ]]; then
+if [[ $result == *"QEMU QCOW2 Image (v2)"* ]]; then
    echo "Supplied FortiWeb image is in: $1"
    FORTIWEB_QCOW2=$1
 else
@@ -73,7 +73,19 @@ end
 config system global
   set admintimeout 480
 end
+config system admin
+  edit admin
+    set password m
+    set force-password-change disable
+  next
+end
+
 EOF
 
 sudo mkisofs -publisher "OpenStack Nova 12.0.2" -J -R -V config-2 -o ${SF_NAME}-cidata.iso cfg-drv-fgt
-virt-install --connect qemu:///system --noautoconsole --filesystem ${PWD},shared_dir --import --name ${SF_NAME} --ram 4096 --vcpus 2 --disk fortiweb.qcow2,size=3 --disk fwb-logs.qcow2,size=3 --disk ${SF_NAME}-cidata.iso,device=cdrom,bus=ide,format=raw,cache=none --network bridge=virbr0,mac=${SF_MAC_ADMIN},model=virtio
+
+virt-install --connect qemu:///system --noautoconsole --filesystem ${PWD},shared_dir \
+--import --name ${SF_NAME} --ram 4096 --vcpus 2 \
+--disk fortiweb.qcow2,size=3,bus=virtio --disk fwb-logs.qcow2,size=3,bus=virtio \
+--disk ${SF_NAME}-cidata.iso,device=cdrom,bus=ide,format=raw,cache=none \
+--network bridge=virbr0,mac=${SF_MAC_ADMIN},model=virtio
