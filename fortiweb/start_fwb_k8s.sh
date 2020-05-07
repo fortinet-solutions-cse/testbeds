@@ -20,7 +20,7 @@ if [ -z "$1" ]; then
   exit -1
 fi
 result=$(file $1)
-if [[ $result == *"QEMU QCOW Image (v2)"* ]]; then
+if [[ $result == *"QEMU QCOW2 Image (v"* ]]; then
    echo "Supplied FortiWeb image is in: $1"
    FORTIWEB_QCOW2=$1
 else
@@ -121,6 +121,13 @@ end
 config system global
   set admintimeout 480
 end
+config system admin
+  edit admin
+    set password m
+    set force-password-change disable
+  next
+end
+
 EOF
 
 sudo mkisofs -publisher "OpenStack Nova 12.0.2" -J -R -V config-2 -o ${SF_NAME}-cidata.iso cfg-drv-fgt
