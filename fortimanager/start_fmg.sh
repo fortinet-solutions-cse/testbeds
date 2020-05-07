@@ -20,7 +20,7 @@ if [ -z "$1" ]; then
   exit -1
 fi
 result=$(file $1)
-if [[ $result =~ QEMU.QCOW.*Image.\(v.\) ]]; then
+if [[ "$result" == *"QEMU QCOW2 Image (v"* ]]; then
    echo "Supplied FortiManager image is in: $1"
    FORTIMANAGER_QCOW2=$1
 else
@@ -28,7 +28,7 @@ else
    exit -1
 fi
 if [[ "$(realpath $FORTIMANAGER_QCOW2)" == "$(pwd)/fortimanager.qcow2" ]]; then
-   echo "Fortimanager image can not be named fortimanager.qcow2 in this directory. Choose different location/name"
+   echo "Fortimanager image can not be copied to fortimanager.qcow2 in this directory. Choose different location/name"
    exit -1
 fi
 
@@ -45,6 +45,7 @@ rm -rf ${SF_NAME}-cidata.iso
 cp ${FORTIMANAGER_QCOW2} ./fortimanager.qcow2
 
 virt-install --connect qemu:///system --noautoconsole --filesystem ${PWD},shared_dir --import \
+  --cpu host,-vmx \
   --name ${SF_NAME} --ram 4096 --vcpus 2 --disk fortimanager.qcow2,size=3 \
   --network bridge=virbr0,mac=${SF_MAC_ADMIN},model=virtio
 #  --disk fmg-logs.qcow2,size=30
