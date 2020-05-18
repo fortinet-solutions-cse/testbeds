@@ -60,7 +60,8 @@ config system interface
     set mode static
     set ip ${SF_IP_ADMIN}/24
     set allowaccess ping https ssh snmp http telnet fgfm radius-acct probe-response fabric ftm     
-
+    set mtu-override enable
+    set mtu 1460
   next
 end
 config system dns
@@ -89,6 +90,6 @@ sudo mkisofs -publisher "OpenStack Nova 12.0.2" -J -R -V config-2 -o ${SF_NAME}-
 virt-install --connect qemu:///system --noautoconsole \
 --filesystem ${PWD},shared_dir --import --name ${SF_NAME} \
 --cpu host,-vmx \
---ram 1024 --vcpus 1 --disk fortios.qcow2,size=3 \
+--ram 2048 --vcpus 1 --disk fortios.qcow2,size=3 \
 --disk ${SF_NAME}-cidata.iso,device=cdrom,bus=ide,format=raw,cache=none \
 --network bridge=virbr0,mac=${SF_MAC_ADMIN},model=virtio
