@@ -81,7 +81,7 @@ virt-install --connect qemu:///system --noautoconsole --filesystem ${PWD},shared
   --name ${SF_NAME} --ram 4096 --vcpus 2 --disk fortimanager.qcow2,size=3 \
   --disk ${SF_NAME}-cidata.iso,device=cdrom,bus=ide,format=raw,cache=none \
   --network bridge=virbr0,mac=${SF_MAC_ADMIN},model=virtio \
-  --disk fmg-logs.qcow2,size=30
+  --disk fmg-logs.qcow2,size=3
 
 
 # config system admin setting
