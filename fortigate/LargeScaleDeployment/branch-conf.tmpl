@@ -1,0 +1,57 @@
+config system interface
+# need port1 to be static for exec vm-licens to work
+ edit port1
+  set vdom "root"
+  set mode static
+  set ip 192.168.$N.$M/16
+  set allowaccess ping https http ssh
+  set defaultgw enable
+ next
+ edit port2
+  set vdom "root"
+  set mode static
+  set ip 172.18.$N.$M/16
+  set allowaccess ping ssh fgfm
+  set defaultgw disable
+ next
+ edit port3
+  set mode static
+  set ip 172.19.$N.$M/16
+  set allowaccess ping ssh fgfm
+  set defaultgw disable
+ next
+ edit port4
+  set mode static
+  set ip 10.$N.$M.1/24
+  set allowaccess ping
+  set defaultgw disable
+ next
+ edit port5
+  set mode static
+  set ip 10.$NN.$M.1/24
+  set allowaccess ping
+  set defaultgw disable
+ next
+
+end
+
+config router static
+    edit 2
+        set gateway $ROUTER_IP
+        set device "port1"
+    next
+end
+
+ 
+config system admin
+  edit "admin"
+  set password fortinet
+  set ssh-public-key1 "$SSHKEY"
+  next
+end
+config system global
+    set hostname branch-$N-$M
+end
+
+
+exec vm-license $TOKEN
