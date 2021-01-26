@@ -14,7 +14,6 @@ end
   set mode static
   set ip 192.168.$N.$M/16
   set allowaccess ping https http ssh
-  set defaultgw enable
  next
  edit port2
   set vdom "root"
@@ -45,10 +44,14 @@ end
 end
 
 config router static
-    edit 2
-        set gateway $ROUTER_IP
-        set device "port1"
+    edit 1
+        set gateway 172.18.0.254
+        set device "port3"
     next
+    edit 2
+        set gateway 172.19.0.254
+        set device "port4"
+   next
 end
 
  
