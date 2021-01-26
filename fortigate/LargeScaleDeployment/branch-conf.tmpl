@@ -1,5 +1,14 @@
 config system interface
-# need port1 to be static for exec vm-licens to work
+config system global
+  set timezone 28
+  set admintimeout 480
+end
+config system interface
+  edit "port2"
+
+  next
+end
+# need port1 to be static for exec vm-license to work
  edit port1
   set vdom "root"
   set mode static
@@ -11,13 +20,13 @@ config system interface
   set vdom "root"
   set mode static
   set ip 172.18.$N.$M/16
-  set allowaccess ping ssh fgfm
+  set allowaccess ping https http ssh fgfm
   set defaultgw disable
  next
  edit port3
   set mode static
   set ip 172.19.$N.$M/16
-  set allowaccess ping ssh fgfm
+  set allowaccess ping https http ssh fgfm
   set defaultgw disable
  next
  edit port4
@@ -50,7 +59,7 @@ config system admin
   next
 end
 config system global
-    set hostname branch-$N-$M
+    set hostname site-$N-$M
 end
 
 

@@ -1,5 +1,5 @@
 #!/bin/bash -ex
-# Build the branch VM corresponding N and M (M between 1-250) 
+# Build the site VM corresponding N and M (M between 1-250)
 # 
 #if not set use the calling folder for finding the flavor def and kvm images
 
@@ -10,7 +10,7 @@ if [[ $# -ne 2 ]]
  fi
 export N=$1
 export M=$2
-export NAME=branch-$N-$M
+export NAME=site-$N-$M
 ## Network will be 100+N
 export NN=`printf "1%02d" $N`
 HOSTID=`hostname -s|sed 's/massive//g'`
@@ -27,11 +27,11 @@ fi
 export VLANID=$(( ($N - $N%4 )/4*250 + $M ))
 
 ## remove any running VM and associated networks with the targeted name
-l=`virsh list --all|grep "branch-$N-$M " ; true`
+l=`virsh list --all|grep "site-$N-$M " ; true`
 if [ -n "$l" ]
  then
-  virsh destroy branch-$N-$M || true
-  virsh undefine branch-$N-$M  --remove-all-storage
+  virsh destroy site-$N-$M || true
+  virsh undefine site-$N-$M  --remove-all-storage
   virsh net-destroy  mtap-eno4.$VLANID || true
   virsh net-destroy  mtap-eno1.$VLANID || true
   virsh net-undefine mtap-eno4.$VLANID || true
@@ -111,7 +111,7 @@ export TOKEN=`ls ~/tokens-pool/ |grep -v build.lock| head -1`
 [ -z $TOKEN ] && (echo "FAILED to FIND a TOKEN"; exit 2)
 
 
-envsubst < ~/mass/branch-conf.tmpl > ~/configs/cfg-$N-$M/openstack/latest/user_data
+envsubst < ~/mass/site-conf.tmpl > ~/configs/cfg-$N-$M/openstack/latest/user_data
 cd ~/configs/
 genisoimage -publisher "OpenStack Nova 12.0.2" -J -R -V config-2 -o day0-$N-$M.iso cfg-$N-$M
 virt-install --name ${NAME} --os-variant generic \
