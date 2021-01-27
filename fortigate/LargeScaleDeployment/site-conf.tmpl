@@ -1,13 +1,10 @@
-config system interface
+
 config system global
   set timezone 28
   set admintimeout 480
 end
-config system interface
-  edit "port2"
 
-  next
-end
+config system interface
 # need port1 to be static for exec vm-license to work
  edit port1
   set vdom "root"
