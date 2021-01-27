@@ -14,6 +14,7 @@ export NAME=site-$N-$M
 ## Network will be 100+N
 export NN=`printf "1%02d" $N`
 HOSTID=`hostname -s|sed 's/massive//g'`
+export ROOT=$PWD
 if [[ $(($N%4)) != "$HOSTID" ]]
  then 
   echo " with N=$N you must run this on massive$(($N%4))"
@@ -110,7 +111,7 @@ echo $$ >  ~/tokens-pool/build.lock
 export TOKEN=`ls ~/tokens-pool/ |grep -v build.lock| head -1`
 [ -z $TOKEN ] && (echo "FAILED to FIND a TOKEN"; exit 2)
 
-
+cd $ROOT
 envsubst < ./site-conf.tmpl > ~/configs/cfg-$N-$M/openstack/latest/user_data
 cd ~/configs/
 genisoimage -publisher "OpenStack Nova 12.0.2" -J -R -V config-2 -o day0-$N-$M.iso cfg-$N-$M
