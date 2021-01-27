@@ -111,7 +111,7 @@ export TOKEN=`ls ~/tokens-pool/ |grep -v build.lock| head -1`
 [ -z $TOKEN ] && (echo "FAILED to FIND a TOKEN"; exit 2)
 
 
-envsubst < site-conf.tmpl > ~/configs/cfg-$N-$M/openstack/latest/user_data
+envsubst < ./site-conf.tmpl > ~/configs/cfg-$N-$M/openstack/latest/user_data
 cd ~/configs/
 genisoimage -publisher "OpenStack Nova 12.0.2" -J -R -V config-2 -o day0-$N-$M.iso cfg-$N-$M
 virt-install --name ${NAME} --os-variant generic \
