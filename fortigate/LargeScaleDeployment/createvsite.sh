@@ -122,6 +122,10 @@ virt-install --name ${NAME} --os-variant generic \
 --network network:mtap-eno3,model=virtio --network network:mtap-eno4.$VLANID,model=virtio --network network:mtap-eno1.$VLANID,model=virtio
 ##optionnal add a log disk for long running tests --disk path=/var/lib/libvirt/images/foslogs.qcow2,size=10,bus=virtio \
 
+# we can now release it
+rm -f ~/tokens-pool/build.lock ~/tokens-pool/$TOKEN
+
+
 
 export IP=192.168.$N.$M
 
