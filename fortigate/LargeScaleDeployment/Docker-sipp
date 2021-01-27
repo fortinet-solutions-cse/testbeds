@@ -6,6 +6,7 @@ LABEL "system"="alpine latest"
 
 LABEL "description"="SIPP with sctp, pcap and openssl support"
 
-RUN mkdir /sipp
-ADD g711a.pcap uac_pcap_g711a.xml /sipp/
+RUN mkdir -p /root/sipp/pcap
+ADD uac_pcap_g711a.xml /root/sipp/
+ADD g711a.pcap /root/sipp/pcap
 CMD sipp
