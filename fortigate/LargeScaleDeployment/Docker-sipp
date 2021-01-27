@@ -5,8 +5,5 @@ LABEL "author"="github.com/thomnico"
 LABEL "system"="alpine latest"
 
 LABEL "description"="SIPP with sctp, pcap and openssl support"
-RUN mkdir -p /sipp/pcap
-ADD uac_pcap_g711a.xml /sipp/
-ADD g711a.pcap /sipp/pcap
 
 CMD sipp
