@@ -21,6 +21,35 @@ Populate tokens-pool from file directly exported from portal
 for t in `awk -F "," '{print $4}' LSD-tokens.csv|grep -v "License File Token" |sed 's/"//g'`; do touch tokens-pool/$t; done
 ```
 
+# sites
+Naming schema and access:
+every VM is called branch-N-M where M<250
+
+We have 4 hypervisors 10.210.15.[1-4] the VM is on machine N modulo 4, for example N=6 is on massive2 (10.210.15.2)
+
+To access:
+log on host: ssh fortinet@10.210.15.1 (passwd fortinet)
+
+To ssh to console:
+ssh admin@192.168.N.M
+Or go to console:
+virsh console branch-N-M
+
+Network setup:
+port2: 172.18.N.M/24
+
+port3: 172.19.N.M/24
+
+port4: 10.N.M.1/24
+port5: 10.(100+N).M.1/24
+
+Running a client on port4:
+docker run --net=cn-m --ip=10.n.m.22 -it alpine /bin/sh
+
+.22 is arbitrary you have /24 and will be the client ip
+Running a client on port5:
+docker run --net=c(100+n)-m --ip=10.(100+n).m.22 -it alpine /bin/sh
+
 Create 1 to verify:
 cd testbeds/fortigate/LargeScaleDeployment/
 

@@ -51,6 +51,21 @@ config router static
    next
 end
 
+config firewall policy
+    edit 1
+        set name "internet"
+        set srcintf "port3" "port4"
+        set dstintf "port1" "port2"
+        set srcaddr "all"
+        set dstaddr "all"
+        set action accept
+        set schedule "always"
+        set service "ALL"
+        set nat enable
+    next
+end
+
+
  
 config system admin
   edit "admin"
