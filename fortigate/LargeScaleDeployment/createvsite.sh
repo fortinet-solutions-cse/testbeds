@@ -116,8 +116,8 @@ envsubst < ./site-conf.tmpl > ~/configs/cfg-$N-$M/openstack/latest/user_data
 cd ~/configs/
 genisoimage -publisher "OpenStack Nova 12.0.2" -J -R -V config-2 -o day0-$N-$M.iso cfg-$N-$M
 virt-install --name ${NAME} --os-variant generic \
---ram 2048 --disk path=~/images/${NAME}.qcow2,bus=virtio --disk ~/configs/day0-$N-$M.iso,device=cdrom,bus=ide,format=raw \
---vcpus=2 --os-type=linux --cpu=host --import --noautoconsole --keymap=en-us \
+--ram 1024 --disk path=~/images/${NAME}.qcow2,bus=virtio --disk ~/configs/day0-$N-$M.iso,device=cdrom,bus=ide,format=raw \
+--vcpus=1 --os-type=linux --cpu=host --import --noautoconsole --keymap=en-us \
 --network network:default,model=virtio --network network:mtap-eno2,model=virtio \
 --network network:mtap-eno3,model=virtio --network network:mtap-eno4.$VLANID,model=virtio --network network:mtap-eno1.$VLANID,model=virtio
 ##optionnal add a log disk for long running tests --disk path=/var/lib/libvirt/images/foslogs.qcow2,size=10,bus=virtio \
