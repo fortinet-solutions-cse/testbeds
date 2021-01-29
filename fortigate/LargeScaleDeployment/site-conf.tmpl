@@ -43,19 +43,19 @@ end
 config router static
     edit 1
         set gateway 172.18.0.254
-        set device "port3"
+        set device "port2"
     next
     edit 2
         set gateway 172.19.0.254
-        set device "port4"
+        set device "port3"
    next
 end
 
 config firewall policy
     edit 1
         set name "internet"
-        set srcintf "port3" "port4"
-        set dstintf "port1" "port2"
+        set srcintf "port4" "port5"
+        set dstintf "port2" "port3"
         set srcaddr "all"
         set dstaddr "all"
         set action accept
