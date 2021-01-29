@@ -1,9 +1,0 @@
-FROM alpine
-
-RUN apk add --no-cache sipp
-LABEL "author"="github.com/thomnico"
-LABEL "system"="alpine latest"
-
-LABEL "description"="SIPP with sctp, pcap and openssl support"
-
-CMD sipp

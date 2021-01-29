@@ -13,7 +13,7 @@ curl -fsSL https://get.docker.com -o get-docker.sh
 sudo sh get-docker.sh
 sudo usermod -aG docker $USER
 sudo usermod -a -G libvirt $(whoami)
-mkdir configs images tokens-pool
+mkdir ~/configs ~/images ~/tokens-pool
 ## use all the disk
 sudo lvextend -L 433G -r /dev/ubuntu-vg/ubuntu-lv
 sudo apt purge -y landscape-common
