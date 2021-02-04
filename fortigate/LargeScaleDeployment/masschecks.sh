@@ -8,8 +8,8 @@ do
  echo "### For N=$NN ###"
  echo "sites: $(virsh list | grep "site-$NN"|wc -l)/250"
  echo "clients port4: $(docker ps | grep "client-$NN-"|wc -l)/250"
- export N100=`printf "1%02d" $N`
- echo "clients port5: $(docker ps | grep "client-$N100^X-"|wc -l)/250"
+ export N100=`printf "1%02d" $NN`
+ echo "clients port5: $(docker ps | grep "client-$N100-"|wc -l)/250"
 done
 
 
