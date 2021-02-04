@@ -171,9 +171,9 @@ fs.inotify.max_user_instances=1048576
 fs.inotify.max_user_watches=1048576
 EOF
 
-sudo rm /usr/lib/sysctl.d/juju-2.0.conf
 #To see what is going on
 sudo sysctl --system
+
 ```
 
 # REBOOT 
