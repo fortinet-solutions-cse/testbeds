@@ -1,6 +1,6 @@
 #!/bin/bash -e
 # Build the site VM corresponding N and M (M between 1-250)
-# 
+#
 #if not set use the calling folder for finding the flavor def and kvm images
 
 
