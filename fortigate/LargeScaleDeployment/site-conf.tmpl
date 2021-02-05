@@ -6,11 +6,11 @@ end
 
 config system interface
 # need port1 to be static for exec vm-license to work
- edit port1
-  set vdom "root"
+ edit port5
   set mode static
-  set ip 192.168.$N.$M/16
-  set allowaccess ping https http ssh
+  set ip 10.$NN.$M.1/24
+  set allowaccess ping ssh
+  set defaultgw disable
  next
  edit port2
   set vdom "root"
@@ -28,16 +28,9 @@ config system interface
  edit port4
   set mode static
   set ip 10.$N.$M.1/24
-  set allowaccess ping
+  set allowaccess ping ssh
   set defaultgw disable
  next
- edit port5
-  set mode static
-  set ip 10.$NN.$M.1/24
-  set allowaccess ping
-  set defaultgw disable
- next
-
 end
 
 config router static
@@ -54,7 +47,7 @@ end
 config firewall policy
     edit 1
         set name "internet"
-        set srcintf "port4" "port5"
+        set srcintf "port4" "port1"
         set dstintf "port2" "port3"
         set srcaddr "all"
         set dstaddr "all"
