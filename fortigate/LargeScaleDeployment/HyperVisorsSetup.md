@@ -55,27 +55,9 @@ Destroy default (to extend to a /16 instead of /8)
 virsh net-destroy default
 virsh net-undefine default
 ```
-```xml
-<network>
-  <name>default</name>
-  <forward mode='nat'>
-    <nat>
-      <port start='1024' end='65535'/>
-    </nat>
-  </forward>
-  <bridge name='virbr0' stp='on' delay='0'/>
-  <ip address='192.168.0.1' netmask='255.255.0.0'>
-    <dhcp>
-      <range start='192.168.0.2' end='192.168.254.254'/>
-    </dhcp>
-  </ip>
-</network>
-```
-```shell
-virsh net-define --file default.xml 
-virsh net-autostart default
-```
 
+Linux bridges and macvtap do not interact well at scale (600+ VMs/Docker)
+So we move all on macvtap.
 
 
 ```shell
