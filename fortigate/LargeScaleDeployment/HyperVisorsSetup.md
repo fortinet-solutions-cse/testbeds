@@ -146,6 +146,19 @@ net.ipv4.udp_wmem_min = 16384
 net.ipv4.tcp_max_tw_buckets = 1440000
 net.ipv4.tcp_tw_recycle = 1
 net.ipv4.tcp_tw_reuse = 1
+# ARP Cache
+# Force gc to clean-up quickly
+net.ipv4.neigh.default.gc_interval = 3600
+
+# Set ARP cache entry timeout
+net.ipv4.neigh.default.gc_stale_time = 3600
+
+# Setup DNS threshold for arp
+net.ipv4.neigh.default.gc_thresh3 = 14096
+net.ipv4.neigh.default.gc_thresh2 = 12048
+net.ipv4.neigh.default.gc_thresh1 = 11024
+
+
 EOF
 
 cat << EOF | sudo tee -a  /etc/sysctl.conf
