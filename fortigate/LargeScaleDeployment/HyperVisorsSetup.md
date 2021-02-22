@@ -170,6 +170,16 @@ EOF
 sudo sysctl --system
 
 ```
+## Hugepages cloud archives
+in /etc/default/grub:
+GRUB_CMDLINE_LINUX="default_hugepagesz=1G hugepagesz=1G hugepages=800"
+```shell
+
+sudo add-apt-repository cloud-archive:victoria
+sudo update-grub
+sudo apt update
+sudo apt upgrade
+```
 
 # REBOOT 
 

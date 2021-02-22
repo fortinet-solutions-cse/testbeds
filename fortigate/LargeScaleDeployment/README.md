@@ -53,3 +53,10 @@ docker run --net=c(100+n)-m --ip=10.(100+n).m.22 -it alpine /bin/sh
 Create 1 to verify:
 cd testbeds/fortigate/LargeScaleDeployment/
 
+# FMG :
+```shell
+virt-install --name FMG6.4.4  --os-variant generic --ram 16000 --disk path=~/images/fmg.qcow2,bus=virtio --vcpus=4 --os-type=linux --cpu=host --import --noautoconsole --keymap=en-us --network network:mtap-eno2,model=virtio \
+ --network network:mtap-eno3,model=virtio --disk path=/var/lib/libvirt/images/fmgdata1.qcow2,size=100,bus=virtio
+```
+
+Find non running VM: for m in {1..250}; do virsh domid site-5-$m >/dev/null ; done
