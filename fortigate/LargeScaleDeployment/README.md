@@ -59,4 +59,6 @@ virt-install --name FMG6.4.4  --os-variant generic --ram 16000 --disk path=~/ima
  --network network:mtap-eno3,model=virtio --disk path=/var/lib/libvirt/images/fmgdata1.qcow2,size=100,bus=virtio
 ```
 
-Find non running VM: for m in {1..250}; do virsh domid site-5-$m >/dev/null ; done
+Find non running VM: 
+for m in {1..250}; do virsh domid site-5-$m >/dev/null  ; done
+for m in {1..250}; do virsh domid site-5-$m >/dev/null || ./restart ; done

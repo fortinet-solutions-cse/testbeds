@@ -20,7 +20,7 @@ echo "check client-$N-$m:"
  docker rm -f client-$N-$m
 # virsh reboot site-$N-$m
  sleep 3
- docker run --net=c$N-$m --ip 10.$N.$m.5 -itd --name client-$N-$m --cpu-shares 200 --cpus 0.1 --memory 0.1G  fit
+ docker run --net=c$N-$m --ip 10.$N.$m.5 -itd --name client-$N-$m --cpu-shares 5 --cpus 0.01 --memory 20M fit
  RESTARTED="$RESTARTED $m"
  fi
 done
