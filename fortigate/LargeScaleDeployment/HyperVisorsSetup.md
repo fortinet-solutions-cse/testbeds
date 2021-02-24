@@ -20,6 +20,12 @@ sudo apt purge -y landscape-common
 ```
 need to reset session for usermod to be taken into account.
 
+You must install a bind9 dns server to avoid overloading the next stage equipments.
+We do it on the massive1 but you can adapt:
+
+
+
+
 Setup eno2/eno3 for KVM:
 
 Create a file in: /etc/netplan/01-wans.yaml example is for massive2 you must adapt the last digit.
@@ -172,9 +178,10 @@ sudo sysctl --system
 ```
 ## Hugepages cloud archives
 in /etc/default/grub:
-GRUB_CMDLINE_LINUX="default_hugepagesz=1G hugepagesz=1G hugepages=800"
-```shell
+GRUB_CMDLINE_LINUX="default_hugepagesz=1G hugepagesz=1G hugepages=760"
 
+Add cloud archive to ensure having the last kvm/qemu patches
+```shell
 sudo add-apt-repository cloud-archive:victoria
 sudo update-grub
 sudo apt update
