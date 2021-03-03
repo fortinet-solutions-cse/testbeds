@@ -15,7 +15,7 @@ sudo usermod -aG docker $USER
 sudo usermod -a -G libvirt $(whoami)
 mkdir ~/configs ~/images ~/tokens-pool
 ## use all the disk
-sudo lvextend -L 433G -r /dev/ubuntu-vg/ubuntu-lv
+sudo lvextend -L 890G -r /dev/ubuntu-vg/ubuntu-lv
 sudo apt purge -y landscape-common
 ```
 need to reset session for usermod to be taken into account.
@@ -163,8 +163,8 @@ net.ipv4.neigh.default.gc_stale_time = 3600
 net.ipv4.neigh.default.gc_thresh3 = 14096
 net.ipv4.neigh.default.gc_thresh2 = 12048
 net.ipv4.neigh.default.gc_thresh1 = 11024
-
-
+# allow forwading on bridge (promiscuous)
+net.bridge.bridge-nf-call-iptables=0
 EOF
 
 cat << EOF | sudo tee -a  /etc/sysctl.conf
@@ -178,7 +178,7 @@ sudo sysctl --system
 ```
 ## Hugepages cloud archives
 in /etc/default/grub:
-GRUB_CMDLINE_LINUX="default_hugepagesz=1G hugepagesz=1G hugepages=760"
+GRUB_CMDLINE_LINUX="default_hugepagesz=1G hugepagesz=1G hugepages=20"
 
 Add cloud archive to ensure having the last kvm/qemu patches
 ```shell
