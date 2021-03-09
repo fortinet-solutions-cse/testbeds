@@ -1,0 +1,52 @@
+network:
+  version: 2
+  renderer: networkd
+
+  ethernets:
+    eno2:
+      dhcp4: false
+      dhcp6: false
+    eno3:
+      dhcp4: false
+      dhcp6: false
+    eno4:
+      dhcp4: false
+      dhcp6: false
+
+  bridges:
+    br2:
+      interfaces: [eno2]
+      addresses: [172.18.0.1/16]
+      gateway4: 172.18.0.254
+      mtu: 1500
+      nameservers:
+        addresses: [172.18.0.1]
+      parameters:
+        stp: true
+        forward-delay: 4
+      dhcp4: no
+      dhcp6: no
+    br3:
+      interfaces: [eno3]
+      addresses: [172.19.0.1/16]
+      gateway4: 172.19.0.254
+      mtu: 1500
+      nameservers:
+            addresses: [172.19.0.1]
+      parameters:
+            stp: true
+            forward-delay: 4
+      dhcp4: no
+      dhcp6: no
+    br4:
+      interfaces: [eno4]
+      addresses: [10.0.0.1/8]
+      mtu: 1500
+      nameservers:
+            addresses: [10.0.0.1]
+      parameters:
+            stp: true
+            forward-delay: 4
+      dhcp4: no
+      dhcp6: no
+
