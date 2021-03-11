@@ -12,9 +12,9 @@ regions:
       - 241
       - 242
     hubs:
+      - site-1-240
       - site-1-241
-      - site-1-242
     edge:
-      {% for M in range(243, 251) %}
+      {% for M in range(242, 251) %}
       - site-1-{{ M }}
       {% endfor %}
