@@ -1,0 +1,9 @@
+---
+fmg_api: https://90.85.12.66/jsonrpc
+# ignore_regions:
+#   - EastEurope
+#   - Americas
+#   - Asia
+#   - MiddleEast
+#   - Australia
+#   - WestEurope

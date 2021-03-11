@@ -1,3 +1,4 @@
 cfg-drv-fgt
 forti*-cidata.iso
 *.qcow2
+__pycache__

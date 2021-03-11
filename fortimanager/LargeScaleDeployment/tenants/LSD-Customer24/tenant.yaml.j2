@@ -1,0 +1,20 @@
+---
+fgt_user: admin
+fgt_password: fortinet
+fmg_user: admin
+fmg_password: fortinet
+adom: LSD-Customer24
+
+regions:
+  - name: OneRegion
+    shortname: OL
+    dc-id:
+      - 208
+      - 209
+    hubs:
+      - site-1-208
+      - site-1-209
+    edge:
+      {% for M in range(210, 224) %}
+      - site-1-{{ M }}
+      {% endfor %}
