@@ -1,5 +1,8 @@
 ---
 fmg_api: https://90.85.12.66/jsonrpc
+faz_api: https://10.210.15.7/jsonrpc
+faz_ip: 172.20.0.42
+faz_sn: FAZ-VMTM21003217
 # ignore_regions:
 #   - EastEurope
 #   - Americas

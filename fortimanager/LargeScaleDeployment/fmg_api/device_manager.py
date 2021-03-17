@@ -30,6 +30,36 @@ class DeviceManagerApi(ApiSession):
 
 
     ##############################################################
+    # Authorize Devices
+    ##############################################################
+    def authorizeDevices(self, dev_list):
+
+        add_dev_list = []
+        for dev in dev_list:
+            add_dev_list.append({
+                "name": dev,
+                "device action": "promote_unreg"
+            })
+
+        payload = {
+            "session": self._session,
+            "id": 1,
+            "method": "exec",
+            "params": [
+                {
+                    "url": "/dvm/cmd/add/dev-list",
+                    "data": {
+                        "adom": self.adom,
+                        "add-dev-list": add_dev_list
+                    }
+                }
+            ]
+        }
+
+        self._run_request(payload, name="Authorize Devices")
+
+
+    ##############################################################
     # Add Devices
     ##############################################################
     def addDevices(self, user, password, dev_list):
@@ -265,6 +295,111 @@ class DeviceManagerApi(ApiSession):
 
 
     ##############################################################
+    # Add Provisioning Template
+    ##############################################################
+    def addProvisioningTemplate(self, template_name, faz_ip, faz_sn):
+
+        payload = {
+            "session": self._session,
+            "id": 1,
+            "method": "set",
+            "params": [
+                {
+                    "url": "/pm/devprof/adom/" + self.adom,
+                    "data": [
+                        {
+                            "name": template_name,
+                            "enabled options": [
+                                "log"
+                            ],
+                            "type": "devprof"
+                        }
+                    ]
+                }
+            ]
+        }
+
+        self._run_request(payload, name=f"Add Provisioning Template ({template_name})")
+
+        payload = {
+            "session": self._session,
+            "id": 1,
+            "method": "set",
+            "params": [
+                {
+                    "url": "/pm/config/adom/" + self.adom + "/devprof/" + template_name + "/device/profile/fortianalyzer",
+                    "data": {
+                        "target": 4,
+                        "target-ip": faz_ip,
+                        "target-sn": [
+                            faz_sn
+                        ]
+                    }
+                }
+            ]
+        }
+
+        self._run_request(payload, name="Add FortiAnalyzer")
+
+        payload = {
+            "session": self._session,
+            "id": 1,
+            "method": "set",
+            "params": [
+                {
+                    "url": "/pm/config/adom/" + self.adom + "/devprof/" + template_name + "/log/fortianalyzer/setting",
+                    "data": {
+                        "access-config": 1,
+                        "certificate-verification": 0,
+                        "enc-algorithm": 0,
+                        "hmac-algorithm": 0,
+                        "interface-select-method": 0,
+                        "ips-archive": 1,
+                        "max-log-rate": 0,
+                        "monitor-failure-retry-period": 20,
+                        "monitor-keepalive-period": 20,
+                        "priority": 3,
+                        "reliable": 0,
+                        "ssl-min-proto-version": 0,
+                        "upload-option": 1
+                    }
+                }
+            ]
+        }
+
+        self._run_request(payload, name="Configure FortiAnalyzer Settings")
+
+
+    ##############################################################
+    # Assign Provisioning Template
+    ##############################################################
+    def assignProvisioningTemplate(self, template_name, dev_list):
+
+        assigned_dev_list = []
+        for dev in dev_list:
+            assigned_dev_list.append(
+                {
+                    "name": dev,
+                    "vdom": "root"
+                }
+            )
+
+        payload = {
+            "session": self._session,
+            "id": 1,
+            "method": "add",
+            "params": [
+                {
+                    "url": "/pm/devprof/adom/" + self.adom + "/" + template_name + "/scope member",
+                    "data": assigned_dev_list
+                }
+            ]
+        }
+
+        self._run_request(payload, name=f"Assign Provisioning Template ({template_name})")
+
+
+    ##############################################################
     # Create Device Group
     ##############################################################
     def createDeviceGroup(self, group_name):
@@ -350,7 +485,17 @@ class DeviceManagerApi(ApiSession):
     ##############################################################
     # Install Configuration
     ##############################################################
-    def installConfiguration(self, dev_name):
+    def installConfiguration(self, dev_list, vdom_global=False):
+
+        dev_scope = []
+        for dev in dev_list:
+            dev_scope.append(
+                {
+                    "name": dev,
+                    "vdom": "global" if vdom_global else "root"
+                }
+            )
+
 
         payload = {
             "session": self._session,
@@ -361,16 +506,11 @@ class DeviceManagerApi(ApiSession):
                     "url": "/securityconsole/install/device",
                     "data": {
                         "adom": self.adom,
-                        "scope": [
-                            {
-                                "name": dev_name,
-                                "vdom": "root"
-                            }
-                        ],
+                        "scope": dev_scope,
                         "flags": "none"
                     }
                 }
             ]
         }
 
-        self._run_request_async(payload, name=f"Install Configuration on {dev_name}")
+        self._run_request_async(payload, name=f"Install Configuration")

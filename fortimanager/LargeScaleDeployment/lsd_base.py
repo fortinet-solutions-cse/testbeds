@@ -20,6 +20,7 @@ def readConfig():
         cfg = yaml.safe_load(cfgfile) | yaml.safe_load(Template(tntfile.read()).render())
 
     print("     FMG URL = " + cfg['fmg_api'])
+    print("     FAZ URL = " + cfg['faz_api'])
     print("     Tenant ADOM = " + cfg['adom'])
 
     if 'ignore_regions' in cfg:
