@@ -1,0 +1,82 @@
+---
+fgt_user: admin
+fgt_password: fortinet
+fmg_user: admin
+fmg_password: fortinet
+faz_user: admin
+faz_password: fortinet
+adom: LSD-Customer1
+
+regions:
+  - name: EastEurope
+    shortname: EE
+    geo-file: ee-geo.txt
+    hubs:
+      - site-5-1
+      - site-5-2
+    edge:
+      {% for M in range(11, 51) %}
+      - site-5-{{ M }}
+      {% endfor %}
+  - name: Americas
+    shortname: AM
+    geo-file: am-geo.txt
+    hubs:
+      - site-5-3
+      - site-5-4
+    edge:
+      {% for M in range(51, 111) %}
+      - site-5-{{ M }}
+      {% endfor %}
+  - name: Asia
+    shortname: AS
+    geo-file: as-geo.txt
+    hubs:
+      - site-5-5
+      - site-5-6
+    edge:
+      {% for M in range(111, 171) %}
+      - site-5-{{ M }}
+      {% endfor %}
+  - name: MiddleEast
+    shortname: ME
+    geo-file: me-geo.txt
+    hubs:
+      - site-5-7
+      - site-5-8
+    edge:
+      {% for M in range(171, 211) %}
+      - site-5-{{ M }}
+      {% endfor %}
+  - name: Australia
+    shortname: AU
+    geo-file: au-geo.txt
+    hubs:
+      - site-5-9
+      - site-5-10
+    edge:
+      {% for M in range(211, 251) %}
+      - site-5-{{ M }}
+      {% endfor %}
+  - name: WestEurope
+    shortname: WE
+    geo-file: we-geo.txt
+    dc-id:
+      - 16
+      - 24
+    hub-template: Hubs-WestEurope-Template
+    edge-template: Edge-WestEurope-Template
+    hubs:
+      - site-2-1
+      - site-3-1
+    edge:
+      {% for N in [2, 3] %}
+      {% for M in range(2, 251) %}
+      - site-{{ N }}-{{ M }}
+      {% endfor %}
+      {% endfor %}
+      {% for N in [6, 7, 9, 10, 11] %}
+      {% for M in range(1, 251) %}
+      - site-{{ N }}-{{ M }}
+      {% endfor %}
+      {% endfor %}
