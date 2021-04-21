@@ -48,7 +48,7 @@ network:
         - 8.8.8.8
     eno4:
       addresses:
-      - 10.0.0.2/8
+      - 10.0.0.2/12
       nameservers:
         addresses:
         - 8.8.8.8
@@ -56,7 +56,7 @@ network:
   version: 2
 ```
 
-Destroy default (to extend to a /16 instead of /8)
+Destroy default (to extend to a /16 instead of /12)
 ```bash
 virsh net-destroy default
 virsh net-undefine default
