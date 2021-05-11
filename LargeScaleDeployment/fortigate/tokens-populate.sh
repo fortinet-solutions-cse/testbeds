@@ -10,5 +10,5 @@ if [[ $# -ne 1 ]]
 
 
 
-for t in `awk -F "," '{print $4}' $1 |grep -v "License File Token" |sed 's/"//g'`; do touch ~/tokens-pool/$t; done
+for t in `awk -F "," '{print $2}' $1 |grep -v "License File Token" |sed 's/"//g'`; do touch ~/tokens-pool/$t; done
 echo "You know have "`ls -l ~/tokens-pool/ |wc -l`" tokens"
