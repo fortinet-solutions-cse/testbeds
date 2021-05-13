@@ -106,10 +106,10 @@ while [ -f ~/tokens-pool/build.lock ]
   fi
 done
 
-echo $$ >  ~/tokens-pool/build.lock
-# take the first TOKEN from list (don't put files in this folder)
-export TOKEN=`ls ~/tokens-pool/ |grep -v build.lock| head -1`
-[ -z $TOKEN ] && (echo "FAILED to FIND a TOKEN"; exit 2)
+# now tokens are obtained directly from tokens.csv according to the site name
+# in the description: site-N-M
+export TOKEN=$(grep \"site-$N-$M\" tokens.csv| awk -F "," '{print $2}')
+[ -z $TOKEN ] && (echo "FAILED to FIND a TOKEN"; exit -2)
 
 cd $ROOT
 envsubst < ./site-conf.tmpl > ~/configs/cfg-$N-$M/openstack/latest/user_data
@@ -121,9 +121,6 @@ virt-install --name ${NAME} --os-variant generic --ram 2048  \
 --network network:mtap-eno1.$VLANID,model=virtio --network network:mtap-eno2,model=virtio \
 --network network:mtap-eno3,model=virtio --network network:mtap-eno4.$VLANID,model=virtio
 ##optionnal add a log disk for long running tests --disk path=/var/lib/libvirt/images/foslogs.qcow2,size=10,bus=virtio \
-
-# we can now release it
-rm -f ~/tokens-pool/build.lock ~/tokens-pool/$TOKEN
 
 
 

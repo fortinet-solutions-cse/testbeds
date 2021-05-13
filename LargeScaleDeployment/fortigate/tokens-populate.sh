@@ -1,5 +1,8 @@
 #!/bin/bash -e
-# populate the token poll from csv extracted from FelxVM portal
+# DEPRECATED - not needed with new token mapping in tokens.csv file:
+#  serialNumber, token, site-id
+#
+# Old: populate the token poll from csv extracted from FelxVM portal
 #
 
 
