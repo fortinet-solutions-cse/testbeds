@@ -20,7 +20,7 @@ Use the functions in ```flex_vm_license.py``` to create the licenses automatical
 
 If you already have the licenses created, you can always update them with a function already prepared (check example in code). The above mentioned python file contains functions and documented examples to get started but some python knowledge is required.
 
-Then in FlexVM portal, right click in your licenses and click 'Export as CSV'. Write the file in this directory with the name 'tokens.csv'.
+Then in FlexVM portal, right click in your licenses and click 'Export as CSV'. Write the file in your home directory with the name '~/tokens.csv'.
 
 ```
 > head tokens.csv
