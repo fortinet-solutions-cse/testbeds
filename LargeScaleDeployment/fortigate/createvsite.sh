@@ -108,7 +108,7 @@ done
 
 # now tokens are obtained directly from tokens.csv according to the site name
 # in the description: site-N-M
-export TOKEN=$(grep \"site-$N-$M\" tokens.csv| awk -F "," '{print $2}')
+export TOKEN=$(grep \"site-$N-$M\" ~/tokens.csv| awk -F "," '{print $2}')
 [ -z $TOKEN ] && (echo "FAILED to FIND a TOKEN"; exit -2)
 
 cd $ROOT
