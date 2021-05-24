@@ -3,3 +3,4 @@ forti*-cidata.iso
 *.qcow2
 __pycache__
 *.DS_Store
+flex_vm_credentials.py
