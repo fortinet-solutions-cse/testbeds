@@ -107,7 +107,7 @@ fi
 
 # A new token is generated for each site. Note license is still the same
 # belonging to site-N-M but the token is regenerated on each call.
-export TOKEN=$(flex_vm_get_token site-$N-$M)
+export TOKEN=$(flex_vm_get_token.py site-$N-$M)
 [ -z $TOKEN ] && (echo "FAILED to FIND a TOKEN"; exit -2)
 
 cd $ROOT
