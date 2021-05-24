@@ -105,23 +105,9 @@ else
     RAM=2048
 fi
 
-## Use a locking mechanism on the list of TOKEN to avoid using twice the same
-while [ -f ~/tokens-pool/build.lock ]
- do
- PID=`cat ~/tokens-pool/build.lock`
- if ps -p $PID > /dev/null
-  then
-   echo "LOCK is used by $PID wait"
-   sleep 12
-  else
-   echo "LOCK is orphaned no process: $PID"
-   rm -f ~/tokens-pool/build.lock
-  fi
-done
-
-# now tokens are obtained directly from tokens.csv according to the site name
-# in the description: site-N-M
-export TOKEN=$(grep \"site-$N-$M\" ~/tokens.csv| awk -F "," '{print $2}')
+# A new token is generated for each site. Note license is still the same
+# belonging to site-N-M but the token is regenerated on each call.
+export TOKEN=$(flex_vm_get_token site-$N-$M)
 [ -z $TOKEN ] && (echo "FAILED to FIND a TOKEN"; exit -2)
 
 cd $ROOT
