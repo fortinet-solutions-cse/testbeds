@@ -31,8 +31,8 @@ def main():
 
     dev_list = [ dev for dev in dev_list if dev not in managed_dev_list ]
     print("    Devices to Add: " + str(len(dev_list)))
-
-    if 'quiet' in cfg or is_good_to_go("Shall we add devices to FMG? "):
+    
+    if 'quiet' in cfg or (len(dev_list) and is_good_to_go("Shall we add devices to FMG? ")):
         session.addDevices(cfg['fgt_user'], cfg['fgt_password'], dev_list)
 
     if 'quiet' in cfg or is_good_to_go("Shall we set device attributes? "):

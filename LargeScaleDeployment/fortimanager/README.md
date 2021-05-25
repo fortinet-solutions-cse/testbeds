@@ -47,7 +47,7 @@ The naming is `LSD-Customer$i` where i is 1..26:
   | LSD-Customer2      | 7 (1 / 6)             |
   | LSD-Customer3..19  | 8 (1 / 7)             |
   | LSD-Customer20..25 | 16 (2 / 14)           |
-  | LSD-Customer26     | 11 (2 / 60)           |
+  | LSD-Customer26     | 11 (2 / 9)            |
 
   For even more details, see the exact tenant definition files under `tenants/LSD-Customer$i/tenant.yaml.j2`.
 

@@ -18,7 +18,7 @@ def main():
         password = cfg['fmg_password']
     )
 
-    session.addAdom(cfg['adom'])
+    session.addAdom()
     session.createMetaField('H')
     session.createMetaField('N')
     session.createMetaField('M')

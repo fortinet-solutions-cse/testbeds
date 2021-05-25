@@ -56,10 +56,11 @@ def main():
     if len(cfg['regions']) > 1:
         fw_session.addNormalizedInterfaces(["lo-XR_T1", "lo-XR_T2"])
 
-    fw_session.createFirewallPolicyPackage("Edge-Policy", "Edge")
-    fw_session.createFirewallPolicyPackage("Hubs-Policy", "Hubs")
-    fw_session.setHubFirewallRules("Hubs-Policy", multireg = len(cfg['regions']) > 1)
-    fw_session.setEdgeFirewallRules("Edge-Policy")
+    if 'quiet' in cfg or is_good_to_go("Shall we reconfigure firewall policies? "):
+        fw_session.createFirewallPolicyPackage("Edge-Policy", "Edge")
+        fw_session.createFirewallPolicyPackage("Hubs-Policy", "Hubs")
+        fw_session.setHubFirewallRules("Hubs-Policy", multireg = len(cfg['regions']) > 1)
+        fw_session.setEdgeFirewallRules("Edge-Policy")
 
 
 if __name__ == "__main__":

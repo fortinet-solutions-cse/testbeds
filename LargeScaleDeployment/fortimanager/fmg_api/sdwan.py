@@ -158,7 +158,7 @@ class SdWanApi(ApiSession):
                 "dst-negate": 0,
                 "protocol": 0,
                 "role": 3,
-                "mode": 4,
+                "mode": 5,
                 "sla": [
                     {
                         "health-check": "Internet",

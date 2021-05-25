@@ -92,6 +92,37 @@ class DeviceManagerApi(ApiSession):
 
         self._run_request_async(payload, name="Add Devices")
 
+
+    ##############################################################
+    # Delete Devices
+    ##############################################################
+    def deleteDevices(self, dev_list):
+
+        del_dev_list = []
+        for dev in dev_list:
+            del_dev_list.append({
+                "name": dev['name'],
+                "vdom": "root"
+            })
+
+        payload = {
+            "session": self._session,
+            "id": 1,
+            "method": "exec",
+            "params": [
+                {
+                    "url": "/dvm/cmd/del/dev-list",
+                    "data": {
+                        "adom": self.adom,
+                        "flags": ["create_task", "nonblocking"],
+                        "del-dev-member-list": del_dev_list
+                    }
+                }
+            ]
+        }
+
+        self._run_request_async(payload, name="Delete Devices")
+
     ##############################################################
     # Get Interfaces
     ##############################################################

@@ -7,7 +7,7 @@ class AdomApi(ApiSession):
     ##############################################################
     # Add ADOM
     ##############################################################
-    def addAdom(self, adom_name):
+    def addAdom(self):
 
         payload = {
             "session": self._session,
@@ -18,7 +18,7 @@ class AdomApi(ApiSession):
                     "url": "/dvmdb/adom",
                     "data": [
                         {
-                            "name": adom_name,
+                            "name": self.adom,
                             "state": 1,
                             "mode": 1,
                             "os_ver": 6,
@@ -43,6 +43,26 @@ class AdomApi(ApiSession):
         }
 
         self._run_request(payload, name="Add ADOM")
+
+
+    ##############################################################
+    # Delete ADOM
+    ##############################################################
+    def deleteAdom(self):
+
+        payload = {
+            "session": self._session,
+            "id": 1,
+            "method": "delete",
+            "params": [
+                {
+                    "url": "/dvmdb/adom/" + self.adom
+                }
+            ]
+        }
+
+        self._run_request(payload, name="Delete ADOM")
+
 
     ##############################################################
     # Create Meta Field
