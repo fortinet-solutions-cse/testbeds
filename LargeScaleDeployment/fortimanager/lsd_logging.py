@@ -37,7 +37,7 @@ def main():
         password = cfg['faz_password']
     )
 
-    session.addAdom(cfg['adom'])
+    session.addAdom()
 
     session = DeviceManagerApi(
         url = cfg['faz_api'],
